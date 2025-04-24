@@ -1,12 +1,19 @@
 # Anàlisi Psicromètric d'Ítems
-Aquest repositori conté un script en R per a l’anàlisi psicomètric d’un qüestionari de respostes binàries (0/1), incloent ítems de resposta múltiple transformats en dicotòmics. A continuació tens la definició i la fórmula matemàtica de cada mètrica, seguida del fragment de codi corresponent per a R.
+
+Aquest repositori conté un script en R per a l’anàlisi psicomètric d’un qüestionari de respostes binàries (0/1), incloent ítems de resposta múltiple transformats en dicotòmics.
 
 ---
 
 ## Instal·lació
+
+Instal·la els paquets necessaris en R:
+
 ```r
 install.packages(c("ltm", "psych", "CTT"))
 ```
+
+Carrega les biblioteques:
+
 ```r
 library(ltm)
 library(psych)
@@ -17,21 +24,13 @@ library(CTT)
 
 ## 1. Dificultat
 
-**Definició**: Mesura la facilitació o dificultat d’un ítem, és a dir, la proporció d’estudiants que responen correctament.
+**Definició:** La dificultat d’un ítem és la proporció d’estudiants que responen correctament, definida com $p = N_{correctes} / N_{total}$, on $N_{correctes}$ és el nombre de respostes correctes i $N_{total}$ el total de respostes.
 
-**Fórmula**:
-$$
-  p \,=\, \frac{N_{\text{correctes}}}{N_{\text{total}}}
-$$
-- On $N_{\text{correctes}}$ és el nombre de respostes correctes i $N_{\text{total}}$ el nombre total de respostes.
-- **Interpretació**:
-  - $p\approx1$: ítem molt fàcil.
-  - $p\approx0$: ítem molt difícil.
-  - Rang recomanat: $0.30 \le p \le 0.80$.
+**Interpretació:** Valors de $p$ propers a 1 indiquen un ítem fàcil, propers a 0 un ítem difícil. Rang recomanat: $0{,}30 \le p \le 0{,}80$.
 
-**Càlcul en R**:
+**Càlcul en R:**
+
 ```r
-# Mitjana de correctes per ítem Q1
 Dificultat_Q1 <- mean(dades$Q1)
 ```
 
@@ -39,21 +38,16 @@ Dificultat_Q1 <- mean(dades$Q1)
 
 ## 2. Discriminació
 
-**Definició**: Grau en què un ítem diferencia entre estudiants de rendiment alt i baix. S’utilitza la correlació ítem-test corregida.
+**Definició:** Mesura la capacitat de l’ítem per diferenciar estudiants d’alt i baix rendiment, mitjançant la correlació ítem-test corregida.
 
-**Fórmula**:
-En aquest cas, s’aprofita la sortida del paquet CTT:
-$$
-  D \,=\, \text{itemTotalCorr}\,(i)
-$$
-- On $\text{itemTotalCorr}(i)$ és la correlació corregida de l’ítem $i$ amb la puntuació total.
-- **Interpretació**:
-  - $D > 0.30$: bona discriminació.
-  - $D < 0.10$: discriminació pobra; cal revisar l’ítem.
+**Fórmula:** $D = \text{itemTotalCorr}(i)$, extreta de l’objecte `itemReport` generat per `itemAnalysis()`.
 
-**Càlcul en R**:
+**Interpretació:** $D > 0{,}30$ indica bona discriminació; $D < 0{,}10$ és pobra.
+
+**Càlcul en R:**
+
 ```r
-res_CTT <- itemAnalysis(dades, NA.Delete=TRUE)
+res_CTT <- itemAnalysis(dades, NA.Delete = TRUE)
 Discriminacio_Q1 <- res_CTT$itemReport["Q1", "itemTotalCorr"]
 ```
 
@@ -61,23 +55,14 @@ Discriminacio_Q1 <- res_CTT$itemReport["Q1", "itemTotalCorr"]
 
 ## 3. Correlació Punt-Biserial (Pbis)
 
-**Definició**: Correlació entre la resposta dicotòmica a l’ítem (0/1) i la puntuació total contínua del test.
+**Definició:** Correlació entre la resposta dicotòmica de l’ítem (0/1) i la puntuació total contínua.
 
-**Fórmula**:
-$$
-  r_{pb} \,=\, \frac{\overline{X}_1 - \overline{X}_0}{S_X} \;\sqrt{p\,(1-p)}
-$$
-- $\overline{X}_1$: mitjana de puntuacions totals dels que encerten l’ítem.
-- $\overline{X}_0$: mitjana de puntuacions totals dels que fallen l’ítem.
-- $S_X$: desviació estàndard de la puntuació total.
-- $p$: proporció d’encerts de l’ítem.
+**Fórmula:** $r_{pb} = (\overline{X}_1 - \overline{X}_0) / S_X \times \sqrt{p\,(1-p)}$, on $\overline{X}_1$ i $\overline{X}_0$ són les mitjanes de la puntuació total per als qui encerten i qui fallen respectivament, $S_X$ és la desviació estàndard de la puntuació total i $p$ la proporció d’encerts.
 
-- **Interpretació**:
-  - $r_{pb}\ge0.20$: l’ítem s’alinea bé amb la mesura global.
-  - $r_{pb}\le0$ o aprox.
-: pot indicar un problema de coherència.
+**Interpretació:** $r_{pb} \ge 0{,}20$ és desitjable; valors <= 0 poden indicar incoherència.
 
-**Càlcul en R**:
+**Càlcul en R:**
+
 ```r
 Pbis_Q1 <- res_CTT$itemReport["Q1", "pBis"]
 ```
@@ -86,23 +71,18 @@ Pbis_Q1 <- res_CTT$itemReport["Q1", "pBis"]
 
 ## 4. Fiabilitat (Alfa de Cronbach)
 
-**Definició**: Mesura la consistència interna d’un conjunt d’ítems.
+**Definició:** Consistència interna del conjunt d’ítems.
 
-**Fórmula**:
-$$
-  \alpha \,=\, \frac{k}{k-1} \left(1 - \frac{\sum_{i=1}^k \sigma_i^2}{\sigma_X^2}\right)
-$$
-- $k$: nombre total d’ítems.
-- $\sigma_i^2$: variància de l’ítem $i$.
-- $\sigma_X^2$: variància de la puntuació total.
+**Fórmula:** $\alpha = \frac{k}{k-1} (1 - \sum_{i=1}^k \sigma_i^2 / \sigma_X^2)$, amb $k$ el nombre d’ítems, $\sigma_i^2$ la variància de l’ítem $i$ i $\sigma_X^2$ la variància de la puntuació total.
 
-- **Interpretació**:
-  - $\alpha>0.90$: excel·lent.
-  - $0.80\le\alpha\le0.90$: bona.
-  - $0.70\le\alpha<0.80$: acceptable.
-  - $\alpha<0.70$: consistència baixa; cal revisar els ítems.
+**Interpretació:** $
+- \alpha > 0{,}90$: excel·lent,
+- 0{,}80 \le \alpha \le 0{,}90$: bona,
+- 0{,}70 \le \alpha < 0{,}80$: acceptable,
+- $\alpha < 0{,}70$: baixa.
 
-**Càlcul en R**:
+**Càlcul en R:**
+
 ```r
 alfa <- cronbach.alpha(dades)
 alpha_value <- alfa$alpha
@@ -112,29 +92,30 @@ alpha_value <- alfa$alpha
 
 ## Tractament d’ítems de resposta múltiple
 
-Si un ítem té més d’una opció correcta, codifica cada opció com un ítem dicotòmic (0/1). Per exemple, l’ítem Q5 amb 4 opcions és representat com Q5_1, Q5_2, Q5_3 i Q5_4.
+Cada opció es tracta com un ítem dicotòmic separat (0/1). Per exemple, l’ítem Q5 amb 4 opcions passa a Q5_1, Q5_2, Q5_3 i Q5_4.
 
 ---
 
 ## Execució completa
+
 ```r
-# Eliminar columna Estudiant si existeix
-if("Estudiant" %in% colnames(dades)) dades <- dades[ , -which(names(dades)=="Estudiant")]
+# Eliminar `Estudiant` si existeix
+dades <- dades[, !(names(dades) == "Estudiant")]
 # Forçar numeric i eliminar NA
-dades <- as.data.frame(lapply(dades, as.numeric)); dades <- na.omit(dades)
-# CTT
-res_CTT <- itemAnalysis(dades, NA.Delete=TRUE)
-# Resultats per ítem
+dades <- as.data.frame(lapply(dades, as.numeric))
+dades <- na.omit(dades)
+# Anàlisi CTT
+res_CTT <- itemAnalysis(dades, NA.Delete = TRUE)
+# Resultats
 resultats <- data.frame(
   Item = colnames(dades),
   Dificultat = colMeans(dades),
-  Discriminacio = res_CTT$itemReport[,"itemTotalCorr"],
-  Pbis = res_CTT$itemReport[,"pBis"]
+  Discriminacio = res_CTT$itemReport[, "itemTotalCorr"],
+  Pbis = res_CTT$itemReport[, "pBis"]
 )
 # Alfa de Cronbach
 alfa <- cronbach.alpha(dades)
 print(resultats)
-cat("Alpha de Cronbach:", round(alfa$alpha,3),"\n")
+cat("Alpha de Cronbach:", round(alfa$alpha, 3), "\n")
 ```
-
 
