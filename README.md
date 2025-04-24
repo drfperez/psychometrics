@@ -1,12 +1,3 @@
-Anàlisi psicomètrica de tests. 
-
-Anàlisi d'items:
-1. Dificultat
-2. Discriminació
-3. Correlació Punt-Biserial 
-4. Fiabilitat (alfa de Cronbach)
-
-Respostes a questions 1 (correcta), 0 (incorrecta) de prova de 100 estudiants en dades.csv
 ## Anàlisi d'Items
 Aquest document descriu els principals índexs utilitzats en l'anàlisi d'items per a l'avaluació psicomètrica d'un qüestionari o prova.
 
@@ -15,15 +6,15 @@ Aquest document descriu els principals índexs utilitzats en l'anàlisi d'items 
 ### 1. Dificultat
 - **Definició**: Mesura la facilitat o dificultat d'un ítem segons la proporció d'estudiants que l'han resolt correctament.
 - **Càlcul**:
-  ```math
-  p = \frac{N_{correctes}}{N_{total}}
+  ```text
+  p = N_correctes / N_total
   ```
-  - _N<sub>correctes</sub>_: nombre de respostes correctes.
-  - _N<sub>total</sub>_: nombre total de respostes.
+  - `N_correctes`: nombre de respostes correctes.
+  - `N_total`: nombre total de respostes.
 - **Interpretació**:
-  - Valors de _p_ propers a 1: ítem molt fàcil.
-  - Valors de _p_ propers a 0: ítem molt difícil.
-  - Rang recomanat: 0,20 ≤ _p_ ≤ 0,80.
+  - `p` proper a 1: ítem molt fàcil.
+  - `p` proper a 0: ítem molt difícil.
+  - Rang recomanat: 0,20 ≤ `p` ≤ 0,80.
 
 ---
 
@@ -31,52 +22,53 @@ Aquest document descriu els principals índexs utilitzats en l'anàlisi d'items 
 - **Definició**: Grau en què un ítem diferencia entre individus amb alt i baix rendiment global.
 - **Índex de discriminació (D)**:
   1. Ordena els participants segons la puntuació total.
-  2. Selecciona els grups superior i inferior (tipus 27% cada un).
+  2. Selecciona els grups superior i inferior (aprox. 27% de la mostra cada un).
   3. Calcula:
-     ```math
-     D = p_{superior} - p_{inferior}
+     ```text
+     D = p_superior - p_inferior
      ```
-     - _p<sub>superior</sub>_: proporció de correctes al grup superior.
-     - _p<sub>inferior</sub>_: proporció de correctes al grup inferior.
+     - `p_superior`: proporció de respostes correctes al grup d'alt rendiment.
+     - `p_inferior`: proporció de respostes correctes al grup de baix rendiment.
 - **Interpretació**:
-  - _D_ elevat (≥ 0,30): bona discriminació.
-  - _D_ baix (≤ 0,10): pobra discriminació; considerar eliminar l'ítem.
+  - `D` ≥ 0,30: bona discriminació.
+  - `D` ≤ 0,10: discriminació pobra; considerar eliminar o revisar l'ítem.
 
 ---
 
 ### 3. Correlació Punt-Biserial
-- **Definició**: Correlació entre la puntuació dicotòmica de l'ítem (0/1) i la puntuació total (contínua).
-- **Fórmula**:
-  ```math
-  r_{pb} = \frac{\bar{X}_{1} - \bar{X}_{0}}{S_X} \sqrt{pq}
+- **Definició**: Correlació entre la puntuació dicotòmica d'un ítem (0 = incorrecte, 1 = correcte) i la puntuació total dels participants.
+- **Càlcul**:
+  ```text
+  r_pb = ((Xbar_1 - Xbar_0) / S_X) * sqrt(p * q)
   ```
-  - _\bar{X}<sub>1</sub>_: mitjana de la puntuació total dels que van encertar l'ítem.
-  - _\bar{X}<sub>0</sub>_: mitjana de la puntuació total dels que van fallar.
-  - _S_X_: desviació estàndard de la puntuació total.
-  - _p_: proporció d'encerts (_p_ = N<sub>correctes</sub> / N).
-  - _q_ = 1 - _p_.
+  - `Xbar_1`: mitjana de la puntuació total dels participants que van encertar l'ítem.
+  - `Xbar_0`: mitjana de la puntuació total dels participants que van fallar l'ítem.
+  - `S_X`: desviació estàndard de la puntuació total.
+  - `p`: proporció d'encerts (N_correctes / N_total).
+  - `q`: 1 - p.
 - **Interpretació**:
-  - Valors positius i més alts (≥ 0,20) indiquen que l'ítem s'alinea amb la mesura global.
-  - Valors propers a 0 o negatius: l'ítem no cohesiona amb la resta.
+  - `r_pb` ≥ 0,20: l'ítem s'alinea bé amb la mesura global.
+  - `r_pb` proper a 0 o negatiu: l'ítem no cohesiona amb la resta.
 
 ---
 
 ### 4. Fiabilitat (Alfa de Cronbach)
-- **Definició**: Mesura la consistència interna d'un conjunt d'items.
-- **Fórmula**:
-  ```math
-  \alpha = \frac{k}{k - 1} \left(1 - \frac{\sum_{i=1}^{k} \sigma_{i}^{2}}{\sigma_{X}^{2}}\right)
+- **Definició**: Mesura la consistència interna d'un conjunt d'ítems.
+- **Càlcul**:
+  ```text
+  alpha = (k / (k - 1)) * [1 - (sum(variance_i) / variance_total)]
   ```
-  - _k_: nombre d'items.
-  - _\sigma_{i}^{2}_: variància de l'ítem _i_.
-  - _\sigma_{X}^{2}_: variància de la puntuació total.
+  - `k`: nombre d'ítems.
+  - `variance_i`: variància de l'ítem i.
+  - `variance_total`: variància de la puntuació total.
 - **Interpretació**:
-  - _\alpha_ ≥ 0,90: excel·lent.
-  - 0,80 ≤ _\alpha_ < 0,90: bona.
-  - 0,70 ≤ _\alpha_ < 0,80: acceptable.
-  - _\alpha_ < 0,70: nivell baix; revisar el conjunt d'items.
+  - `alpha` ≥ 0,90: excel·lent.
+  - 0,80 ≤ `alpha` < 0,90: bona.
+  - 0,70 ≤ `alpha` < 0,80: acceptable.
+  - `alpha` < 0,70: consistència baixa; revisar els ítems.
 
 ---
 
-*Per a més detalls i exemples de càlcul, podeu consultar bibliografia especialitzada en anàlisi psicomètrica.*
+*Per a més detalls i exemples d'implementació, consulta la bibliografia especialitzada en anàlisi psicomètrica o els repositoris de codi associats.*
+
 
