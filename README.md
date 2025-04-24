@@ -1,74 +1,54 @@
-## Anàlisi d'Items
-Aquest document descriu els principals índexs utilitzats en l'anàlisi d'items per a l'avaluació psicomètrica d'un qüestionari o prova.
+## Anàlisi psicomètrica dels ítems
 
----
+Aquest script realitza una anàlisi psicomètrica bàsica d’un qüestionari de respostes binàries (0/1), utilitzant els paquets **`CTT`**, **`psych`** i **`ltm`** en R. Les mètriques analitzades són:
 
 ### 1. Dificultat
-- **Definició**: Mesura la facilitat o dificultat d'un ítem segons la proporció d'estudiants que l'han resolt correctament.
-- **Càlcul**:
-  ```text
-  p = N_correctes / N_total
-  ```
-  - `N_correctes`: nombre de respostes correctes.
-  - `N_total`: nombre total de respostes.
-- **Interpretació**:
-  - `p` proper a 1: ítem molt fàcil.
-  - `p` proper a 0: ítem molt difícil.
-  - Rang recomanat: 0,20 ≤ `p` ≤ 0,80.
+La dificultat es calcula com la mitjana de respostes correctes per ítem.
 
----
+```r
+Dificultat = mean(respostes_correctes)
+```
+
+- Valor entre 0 i 1.
+- Ítems amb valors propers a 0 són molt difícils; propers a 1 són molt fàcils.
+- Idealment entre 0.3 i 0.8.
 
 ### 2. Discriminació
-- **Definició**: Grau en què un ítem diferencia entre individus amb alt i baix rendiment global.
-- **Índex de discriminació (D)**:
-  1. Ordena els participants segons la puntuació total.
-  2. Selecciona els grups superior i inferior (aprox. 27% de la mostra cada un).
-  3. Calcula:
-     ```text
-     D = p_superior - p_inferior
-     ```
-     - `p_superior`: proporció de respostes correctes al grup d'alt rendiment.
-     - `p_inferior`: proporció de respostes correctes al grup de baix rendiment.
-- **Interpretació**:
-  - `D` ≥ 0,30: bona discriminació.
-  - `D` ≤ 0,10: discriminació pobra; considerar eliminar o revisar l'ítem.
+Mesura fins a quin punt un ítem distingeix entre estudiants amb rendiment alt i baix. S'utilitza la correlació ítem-test corregida.
 
----
+```r
+Discriminacio = itemTotalCorr  # columna 4 de l’objecte itemReport
+```
 
-### 3. Correlació Punt-Biserial
-- **Definició**: Correlació entre la puntuació dicotòmica d'un ítem (0 = incorrecte, 1 = correcte) i la puntuació total dels participants.
-- **Càlcul**:
-  ```text
-  r_pb = ((Xbar_1 - Xbar_0) / S_X) * sqrt(p * q)
-  ```
-  - `Xbar_1`: mitjana de la puntuació total dels participants que van encertar l'ítem.
-  - `Xbar_0`: mitjana de la puntuació total dels participants que van fallar l'ítem.
-  - `S_X`: desviació estàndard de la puntuació total.
-  - `p`: proporció d'encerts (N_correctes / N_total).
-  - `q`: 1 - p.
-- **Interpretació**:
-  - `r_pb` ≥ 0,20: l'ítem s'alinea bé amb la mesura global.
-  - `r_pb` proper a 0 o negatiu: l'ítem no cohesiona amb la resta.
+- Valor desitjat: superior a 0.2.
+- Valors baixos poden indicar que l’ítem no aporta informació útil.
 
----
+### 3. Correlació Punt-Biserial (Pbis)
+És la correlació entre la resposta binària a l’ítem i la puntuació total (numèrica) del test.
+
+```r
+Pbis = resultats_CTT$itemReport[, 5]
+```
+
+- També hauria de ser superior a 0.2.
+- Valors negatius són indicadors clars de problemes.
 
 ### 4. Fiabilitat (Alfa de Cronbach)
-- **Definició**: Mesura la consistència interna d'un conjunt d'ítems.
-- **Càlcul**:
-  ```text
-  alpha = (k / (k - 1)) * [1 - (sum(variance_i) / variance_total)]
-  ```
-  - `k`: nombre d'ítems.
-  - `variance_i`: variància de l'ítem i.
-  - `variance_total`: variància de la puntuació total.
-- **Interpretació**:
-  - `alpha` ≥ 0,90: excel·lent.
-  - 0,80 ≤ `alpha` < 0,90: bona.
-  - 0,70 ≤ `alpha` < 0,80: acceptable.
-  - `alpha` < 0,70: consistència baixa; revisar els ítems.
+Mesura la consistència interna del qüestionari.
+
+```r
+alfa <- cronbach.alpha(dades)
+```
+
+- Valors recomanats:
+  - > 0.9: Excel·lent
+  - 0.8–0.9: Bona
+  - 0.7–0.8: Acceptable
+  - < 0.7: Millorable
+
+### Ítems problemàtics
+El codi identifica ítems problemàtics si tenen:
+- `Discriminació < 0.2` **o**
+- `Pbis < 0.2`
 
 ---
-
-*Per a més detalls i exemples d'implementació, consulta la bibliografia especialitzada en anàlisi psicomètrica o els repositoris de codi associats.*
-
-
