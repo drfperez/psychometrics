@@ -1,6 +1,6 @@
 # Anàlisi Psicomètric d'Ítems
 
-Aquest repositori conté un script en R per a l’anàlisi psicomètric d’un qüestionari de respostes binàries (0/1), incloent ítems de resposta múltiple transformats en dicotòmics.
+Aquest repositori conté diferents scripts en R principalment. Per exemple, en un script en R per a l’anàlisi psicomètric d’un qüestionari de respostes binàries (0/1), incloent ítems de resposta múltiple transformats en dicotòmics.
 
 ---
 
