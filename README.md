@@ -76,9 +76,9 @@ Pbis_Q1 <- res_CTT$itemReport["Q1", "pBis"]
 **Fórmula:** $\alpha = \frac{k}{k-1} (1 - \sum_{i=1}^k \sigma_i^2 / \sigma_X^2)$, amb $k$ el nombre d’ítems, $\sigma_i^2$ la variància de l’ítem $i$ i $\sigma_X^2$ la variància de la puntuació total.
 
 **Interpretació:** $\alpha > 0{,}90$: excel·lent
-$\alpha < 0{,}80$: bona
-$\alpha <0{,}70$: acceptable
-$\alpha < 0{,}70$: baixa.
+ $\alpha > 0{,}80$: bona
+ $\alpha > 0{,}70$: acceptable
+ $\alpha < 0{,}70$: baixa.
 
 **Càlcul en R:**
 
