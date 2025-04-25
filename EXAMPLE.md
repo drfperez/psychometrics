@@ -3,27 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anàlisi d’Ítems: Guia Pas a Pas</title>
-  <script>
-    window.MathJax = {
-      tex: { inlineMath: [['$','$'], ['\\(','\\)']] },
-      svg: { fontCache: 'global' }
-    };
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 2rem; line-height: 1.6; }
-    nav { background: #f9f9f9; padding: 1rem; border-radius: 8px; }
-    nav a { margin-right: 1rem; color: #0056b3; text-decoration: none; }
-    section { margin-top: 2rem; }
-    h1, h2, h3 { color: #333; }
-    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
-    th, td { border: 1px solid #bbb; padding: 0.5rem; text-align: center; }
-    th { background: #eee; }
-    details { margin: 1rem 0; }
-    summary { font-weight: bold; cursor: pointer; }
-    .note { font-size: 0.9rem; color: #555; }
-  </style>
+  
+  
 </head>
 <body>
   <h1>Anàlisi d’Ítems Completa: 8 Ítems / 30 Alumnes</h1>
