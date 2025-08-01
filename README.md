@@ -2,6 +2,8 @@
 
 Aquest repositori conté diferents scripts en R principalment. Per exemple, en un script en R per a l’anàlisi psicomètric d’un qüestionari de respostes binàries (0/1), incloent ítems de resposta múltiple transformats en dicotòmics.
 
+Per altre banda també trobareu arxiu compara.html on trobareu una interficie funcional on s'introdueixen respostes binàries en una caixa de text o es puja en format csv i a mes de calcular com en R dificultat, disxriminació i alfa de Cronbach fa una anàñisi comparativa preliminar amb omega de McDonald per saber la fiabilitat dels qüestionaris.
+
 ---
 
 ## Instal·lació
